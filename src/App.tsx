@@ -9,6 +9,14 @@ import { ThemeProvider } from "./components/theme-provider";
 import Dashboard from "./pages/Dashboard";
 import Employees from "./pages/Employees";
 import Payroll from "./pages/Payroll";
+import Attendance from "./pages/Attendance";
+import Leave from "./pages/Leave";
+import Performance from "./pages/Performance";
+import Recruitment from "./pages/Recruitment";
+import Calendar from "./pages/Calendar";
+import Settings from "./pages/Settings";
+import Help from "./pages/Help";
+import Profile from "./pages/Profile";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -26,6 +34,14 @@ const App = () => (
             <Route path="/" element={<Dashboard />} />
             <Route path="/employees" element={<Employees />} />
             <Route path="/payroll" element={<Payroll />} />
+            <Route path="/attendance" element={<Attendance />} />
+            <Route path="/leave" element={<Leave />} />
+            <Route path="/performance" element={<Performance />} />
+            <Route path="/recruitment" element={<Recruitment />} />
+            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/old" element={<Index />} />
             {/* More routes will be added as we implement more pages */}
             <Route path="*" element={<NotFound />} />
