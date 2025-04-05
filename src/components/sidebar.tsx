@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -16,7 +15,8 @@ import {
   Timer,
   User,
   UserPlus,
-  Users
+  Users,
+  UserCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -163,11 +163,19 @@ export function Sidebar() {
           <nav className="flex flex-col">
             <SidebarNavItem
               icon={LayoutDashboard}
-              title="Dashboard"
+              title="Admin Dashboard"
               href="/"
               expanded={expanded}
               active={isActive("/")}
               badge="3"
+            />
+            <SidebarNavItem
+              icon={UserCheck}
+              title="Employee Dashboard" 
+              href="/employee-dashboard"
+              expanded={expanded}
+              active={isActive("/employee-dashboard")}
+              badge="New"
             />
             <SidebarNavItem
               icon={Users}
@@ -262,10 +270,10 @@ export function Sidebar() {
 
         {expanded && (
           <div className="mt-auto mb-4 p-3">
-            <div className="rounded-lg bg-gradient-to-br from-primary-100 to-primary-200/50 backdrop-blur-sm p-3 border border-primary-300/20">
+            <div className="rounded-lg glass-card p-3 border border-primary/10">
               <h4 className="text-sm font-medium mb-1">Need help?</h4>
               <p className="text-xs text-muted-foreground mb-2">Check our documentation</p>
-              <Button size="sm" variant="outline" className="w-full text-xs bg-white/80 hover:bg-white">
+              <Button size="sm" variant="outline" className="w-full text-xs bg-white/80 backdrop-blur-sm hover:bg-white">
                 View Docs
               </Button>
             </div>

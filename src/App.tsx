@@ -19,6 +19,7 @@ import Help from "./pages/Help";
 import Profile from "./pages/Profile";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import EmployeeDashboard from "./pages/EmployeeDashboard";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/employees" element={<Employees />} />
+              <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
               <Route path="/payroll" element={<Payroll />} />
               <Route path="/attendance" element={<Attendance />} />
               <Route path="/leave" element={<Leave />} />
