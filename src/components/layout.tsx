@@ -1,6 +1,6 @@
 
 import { ReactNode } from "react";
-import { Sidebar } from "./sidebar";
+import { Sidebar } from "./layout/sidebar";
 import { Header } from "./header";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { useLocation } from "react-router-dom";
@@ -17,7 +17,9 @@ export function Layout({ children, title, subtitle, breadcrumb = true }: LayoutP
   const pathSegments = location.pathname.split("/").filter(Boolean);
 
   const formatBreadcrumbLabel = (segment: string) => {
-    return segment.charAt(0).toUpperCase() + segment.slice(1);
+    return segment.replace(/-/g, ' ').split(' ').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
   };
 
   return (
@@ -27,7 +29,7 @@ export function Layout({ children, title, subtitle, breadcrumb = true }: LayoutP
         <Header />
         <main className="flex-1 p-4 md:p-6 lg:p-8 bg-muted/30">
           <div className="mx-auto container space-y-6">
-            <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+            <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center animate-fade-in">
               <div>
                 {title && <h1 className="text-3xl font-bold tracking-tight">{title}</h1>}
                 {subtitle && <p className="text-muted-foreground">{subtitle}</p>}
@@ -36,7 +38,7 @@ export function Layout({ children, title, subtitle, breadcrumb = true }: LayoutP
                 <Breadcrumb>
                   <BreadcrumbList>
                     <BreadcrumbItem>
-                      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                      <BreadcrumbLink href="/" className="hover-lift">Home</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     {pathSegments.map((segment, index) => {
@@ -49,7 +51,7 @@ export function Layout({ children, title, subtitle, breadcrumb = true }: LayoutP
                         </BreadcrumbItem>
                       ) : (
                         <BreadcrumbItem key={segment}>
-                          <BreadcrumbLink href={href}>
+                          <BreadcrumbLink href={href} className="hover-lift">
                             {formatBreadcrumbLabel(segment)}
                           </BreadcrumbLink>
                           <BreadcrumbSeparator />

@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -199,6 +200,56 @@
   .hover-lift:hover {
     transform: translateY(-4px);
     @apply shadow-lg;
+  }
+  
+  /* New Hover Animation Classes */
+  .hover-scale {
+    @apply transition-transform duration-200 ease-in-out;
+  }
+  
+  .hover-scale:hover {
+    @apply transform scale-105;
+  }
+  
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+  
+  .hover-glow:hover {
+    @apply shadow-[0_0_15px_rgba(0,175,153,0.5)];
+  }
+  
+  .hover-bright {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  
+  .hover-bright:hover {
+    @apply brightness-110;
+  }
+  
+  .hover-slide-x {
+    @apply transition-transform duration-300 ease-in-out;
+  }
+  
+  .hover-slide-x:hover {
+    @apply translate-x-1;
+  }
+  
+  .hover-slide-up {
+    @apply transition-transform duration-300 ease-in-out;
+  }
+  
+  .hover-slide-up:hover {
+    @apply -translate-y-1;
+  }
+  
+  .hover-border {
+    @apply transition-all duration-300;
+    @apply border border-transparent;
+  }
+  
+  .hover-border:hover {
+    @apply border-primary/50;
   }
   
   /* Pulse Animation */
