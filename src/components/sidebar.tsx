@@ -20,6 +20,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface SidebarNavItemProps {
   icon: React.ElementType;
@@ -27,6 +29,7 @@ interface SidebarNavItemProps {
   href: string;
   expanded: boolean;
   active: boolean;
+  badge?: string | number;
   hasChildren?: boolean;
   children?: React.ReactNode;
 }
@@ -37,6 +40,7 @@ const SidebarNavItem = ({
   href,
   expanded,
   active,
+  badge,
   hasChildren = false,
   children,
 }: SidebarNavItemProps) => {
@@ -47,11 +51,11 @@ const SidebarNavItem = ({
       <Link
         to={href}
         className={cn(
-          "flex items-center py-2 px-3 my-1 rounded-md transition-colors",
+          "relative flex items-center py-2 px-3 my-1 rounded-md transition-colors",
           expanded ? "justify-start" : "justify-center",
           active
-            ? "bg-primary/10 text-primary"
-            : "hover:bg-muted text-foreground/80 hover:text-foreground"
+            ? "bg-primary/20 text-primary backdrop-blur-sm"
+            : "hover:bg-muted/80 hover:backdrop-blur-sm text-foreground/80 hover:text-foreground"
         )}
         onClick={(e) => {
           if (hasChildren) {
@@ -64,6 +68,14 @@ const SidebarNavItem = ({
         {expanded && (
           <span className="ml-2 text-sm font-medium duration-200">{title}</span>
         )}
+        {badge && expanded && (
+          <Badge 
+            variant="secondary" 
+            className="ml-auto text-xs font-semibold bg-primary/10 text-primary"
+          >
+            {badge}
+          </Badge>
+        )}
         {hasChildren && expanded && (
           <ChevronRight
             className={cn(
@@ -72,9 +84,17 @@ const SidebarNavItem = ({
             )}
           />
         )}
+        {badge && !expanded && (
+          <Badge 
+            variant="secondary" 
+            className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-[10px] font-semibold bg-primary text-primary-foreground"
+          >
+            {badge}
+          </Badge>
+        )}
       </Link>
       {hasChildren && isOpen && expanded && (
-        <div className="ml-4 mt-1 pl-4 border-l border-border">{children}</div>
+        <div className="ml-4 mt-1 pl-4 border-l border-border/40 backdrop-blur-sm">{children}</div>
       )}
     </div>
   );
@@ -89,35 +109,42 @@ export function Sidebar() {
   return (
     <div
       className={cn(
-        "flex flex-col border-r bg-sidebar h-screen overflow-hidden transition-all duration-300 ease-in-out sticky top-0 left-0",
+        "group flex flex-col border-r border-border/40 bg-sidebar/40 backdrop-blur-lg h-screen overflow-hidden transition-all duration-300 ease-in-out sticky top-0 left-0",
         expanded ? "w-64" : "w-16"
       )}
     >
-      <div className="flex items-center h-16 px-3 border-b">
+      <div className="flex items-center h-16 px-3 border-b border-border/40">
         <div className="flex items-center">
           {expanded ? (
             <Link 
               to="/" 
               className="flex items-center gap-2 font-bold text-xl text-primary"
             >
-              <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-white">
+              <div className="w-8 h-8 rounded-md bg-gradient-to-br from-primary to-primary-600 flex items-center justify-center text-white">
                 HR
               </div>
-              <span>HRMS Pro</span>
+              <span className="text-gradient-primary">HRMS Pro</span>
             </Link>
           ) : (
-            <Link 
-              to="/" 
-              className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-white mx-auto"
-            >
-              HR
-            </Link>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link 
+                    to="/" 
+                    className="w-8 h-8 rounded-md bg-gradient-to-br from-primary to-primary-600 flex items-center justify-center text-white mx-auto"
+                  >
+                    HR
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right">HRMS Pro</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
         </div>
         <Button
           variant="ghost"
           size="icon"
-          className="ml-auto"
+          className="ml-auto hover:bg-muted/50"
           onClick={() => setExpanded(!expanded)}
         >
           {expanded ? (
@@ -128,7 +155,7 @@ export function Sidebar() {
         </Button>
       </div>
 
-      <div className="flex-1 overflow-auto py-2 px-3">
+      <div className="flex-1 overflow-auto py-2 px-3 glass-scrollbar">
         <div className="mb-4">
           <p className={cn("text-xs font-semibold text-muted-foreground mb-2", !expanded && "text-center")}>
             {expanded ? "GENERAL" : "..."}
@@ -140,6 +167,7 @@ export function Sidebar() {
               href="/"
               expanded={expanded}
               active={isActive("/")}
+              badge="3"
             />
             <SidebarNavItem
               icon={Users}
@@ -168,6 +196,7 @@ export function Sidebar() {
               href="/leave"
               expanded={expanded}
               active={isActive("/leave")}
+              badge="5"
             />
           </nav>
         </div>
@@ -190,6 +219,7 @@ export function Sidebar() {
               href="/recruitment"
               expanded={expanded}
               active={isActive("/recruitment")}
+              badge="2"
             />
             <SidebarNavItem
               icon={Calendar}
@@ -220,8 +250,27 @@ export function Sidebar() {
               expanded={expanded}
               active={isActive("/settings")}
             />
+            <SidebarNavItem
+              icon={User}
+              title="Profile"
+              href="/profile"
+              expanded={expanded}
+              active={isActive("/profile")}
+            />
           </nav>
         </div>
+
+        {expanded && (
+          <div className="mt-auto mb-4 p-3">
+            <div className="rounded-lg bg-gradient-to-br from-primary-100 to-primary-200/50 backdrop-blur-sm p-3 border border-primary-300/20">
+              <h4 className="text-sm font-medium mb-1">Need help?</h4>
+              <p className="text-xs text-muted-foreground mb-2">Check our documentation</p>
+              <Button size="sm" variant="outline" className="w-full text-xs bg-white/80 hover:bg-white">
+                View Docs
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

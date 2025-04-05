@@ -113,4 +113,47 @@
     animation-fill-mode: forwards;
     animation-delay: 100ms;
   }
+  
+  /* Glass Morphism Effects */
+  .glass-morphism {
+    @apply backdrop-blur-lg bg-white/10 border border-white/20 shadow-[0_4px_12px_-2px_rgba(0,0,0,0.15)];
+  }
+  
+  .glass-card {
+    @apply bg-white/60 dark:bg-black/30 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-sm hover:shadow-md transition-all duration-300;
+  }
+  
+  .neo-blur {
+    @apply backdrop-blur-xl bg-white/5 dark:bg-black/40 border border-white/20 dark:border-white/10;
+  }
+  
+  .text-gradient-primary {
+    @apply bg-gradient-to-br from-primary via-primary/80 to-primary-600/60 bg-clip-text text-transparent;
+  }
+  
+  .card-gradient {
+    @apply bg-gradient-to-br from-card to-secondary/80 backdrop-blur-sm;
+  }
+  
+  .glass-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+  }
+  
+  .glass-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .glass-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .glass-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+  }
+  
+  .dark .glass-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
 }
