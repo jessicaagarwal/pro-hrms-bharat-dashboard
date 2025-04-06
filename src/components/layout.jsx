@@ -1,8 +1,8 @@
 
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { Sidebar } from "./layout/sidebar";
 import { Header } from "./header";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "./ui/breadcrumb";
 import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 

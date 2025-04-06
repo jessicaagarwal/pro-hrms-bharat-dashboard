@@ -5,12 +5,11 @@ import {
   Users, 
   Briefcase, 
   Flag, 
-  Gift, 
   PlusCircle 
 } from "lucide-react";
-import { events } from "@/lib/data";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { events } from "../../lib/data";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
 
 export function EventsMeetings() {
   // Sort events by date

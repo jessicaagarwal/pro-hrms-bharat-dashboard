@@ -1,6 +1,6 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { stats } from "@/lib/data";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { stats } from "../../lib/data";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 
 export function DepartmentDistribution() {
