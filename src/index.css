@@ -251,6 +251,42 @@
   .hover-border:hover {
     @apply border-primary/50;
   }
+
+  /* New Animation Classes */
+  .hover-rotate {
+    @apply transition-transform duration-300;
+  }
+  
+  .hover-rotate:hover {
+    @apply rotate-3;
+  }
+  
+  .hover-shadow-pulse {
+    @apply transition-all duration-500;
+  }
+  
+  .hover-shadow-pulse:hover {
+    @apply animate-[shadow-pulse_2s_infinite];
+  }
+  
+  .hover-shake {
+    @apply transition-transform duration-300;
+  }
+  
+  .hover-shake:hover {
+    @apply animate-[shake_0.5s];
+  }
+  
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+    20%, 40%, 60%, 80% { transform: translateX(2px); }
+  }
+  
+  @keyframes shadow-pulse {
+    0%, 100% { box-shadow: 0 0 0 rgba(0, 175, 153, 0.2); }
+    50% { box-shadow: 0 0 20px rgba(0, 175, 153, 0.5); }
+  }
   
   /* Pulse Animation */
   .pulse {
@@ -305,6 +341,43 @@
     content: '';
     @apply absolute inset-0 bg-background rounded-lg;
     z-index: -1;
+  }
+
+  /* Page Transitions */
+  .page-enter {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .page-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms, transform 300ms;
+  }
+  
+  .page-exit {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .page-exit-active {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 300ms, transform 300ms;
+  }
+
+  /* Responsive Utilities */
+  .responsive-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4;
+  }
+  
+  .responsive-flex {
+    @apply flex flex-col md:flex-row;
+  }
+  
+  /* Mobile Optimizations */
+  .mobile-menu {
+    @apply fixed inset-0 bg-background/90 backdrop-blur-sm z-50 pt-20 px-6 flex flex-col md:hidden;
   }
 }
 
