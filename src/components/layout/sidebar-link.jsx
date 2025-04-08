@@ -12,22 +12,22 @@ export function SidebarLink({ to, icon: Icon, label, notificationCount, isActive
   const linkVariants = {
     rest: {
       backgroundColor: "transparent",
-      transition: { duration: 0.2, ease: "easeInOut" }
+      transition: { duration: 0.15, ease: "easeInOut" }
     },
     hover: { 
       backgroundColor: "var(--sidebar-hover)",
-      transition: { duration: 0.2, ease: "easeInOut" }
+      transition: { duration: 0.15, ease: "easeInOut" }
     }
   };
 
   const iconMotion = {
     rest: { 
       scale: 1,
-      transition: { duration: 0.2 }
+      transition: { duration: 0.15 }
     },
     hover: { 
-      scale: 1.08,
-      transition: { duration: 0.3, ease: "easeOut" }
+      scale: 1.05,
+      transition: { duration: 0.2, ease: "easeOut" }
     }
   };
 
@@ -44,7 +44,7 @@ export function SidebarLink({ to, icon: Icon, label, notificationCount, isActive
             <Link
               to={to}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all duration-200",
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all duration-150",
                 "hover:text-sidebar-accent-foreground",
                 "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-sidebar-ring",
                 active && "bg-sidebar-accent/80 text-sidebar-accent-foreground font-medium"

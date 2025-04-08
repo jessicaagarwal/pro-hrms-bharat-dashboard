@@ -6,7 +6,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-import { BriefcaseBusiness, Lock, UserRound, Mail } from "lucide-react";
+import { BriefcaseBusiness, Lock, UserRound, Mail, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Login() {
@@ -63,9 +63,23 @@ export default function Login() {
     }, 1000);
   };
 
+  const handleFillDemoCredentials = (type) => {
+    if (type === 'admin') {
+      setAdminCredentials({
+        email: "admin@hrms.com",
+        password: "admin123"
+      });
+    } else {
+      setEmpCredentials({
+        email: "employee@hrms.com",
+        password: "emp123"
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20 p-4">
-      <Card className="w-full max-w-md glass-card">
+      <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="text-center space-y-2">
           <div className="flex justify-center mb-4">
             <div className="w-12 h-12 rounded-lg bg-primary flex items-center justify-center">
@@ -110,9 +124,13 @@ export default function Login() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="admin-password">Password</Label>
-                    <a href="#" className="text-xs text-primary hover:underline">
-                      Forgot password?
-                    </a>
+                    <button 
+                      type="button"
+                      onClick={() => handleFillDemoCredentials('admin')}
+                      className="text-xs text-primary hover:underline"
+                    >
+                      Use demo credentials
+                    </button>
                   </div>
                   <div className="relative">
                     <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -127,12 +145,21 @@ export default function Login() {
                   </div>
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? "Logging in..." : "Login as Admin"}
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Logging in...
+                    </>
+                  ) : (
+                    "Login as Admin"
+                  )}
                 </Button>
                 <div className="text-center text-sm text-muted-foreground mt-2">
                   <p>Demo credentials:</p>
-                  <p>Email: admin@hrms.com</p>
-                  <p>Password: admin123</p>
+                  <div className="bg-muted/50 p-2 rounded-md mt-1">
+                    <p className="font-mono text-xs">Email: admin@hrms.com</p>
+                    <p className="font-mono text-xs">Password: admin123</p>
+                  </div>
                 </div>
               </form>
             </TabsContent>
@@ -157,9 +184,13 @@ export default function Login() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="emp-password">Password</Label>
-                    <a href="#" className="text-xs text-primary hover:underline">
-                      Forgot password?
-                    </a>
+                    <button 
+                      type="button"
+                      onClick={() => handleFillDemoCredentials('employee')}
+                      className="text-xs text-primary hover:underline"
+                    >
+                      Use demo credentials
+                    </button>
                   </div>
                   <div className="relative">
                     <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -174,19 +205,28 @@ export default function Login() {
                   </div>
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? "Logging in..." : "Login as Employee"}
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Logging in...
+                    </>
+                  ) : (
+                    "Login as Employee"
+                  )}
                 </Button>
                 <div className="text-center text-sm text-muted-foreground mt-2">
                   <p>Demo credentials:</p>
-                  <p>Email: employee@hrms.com</p>
-                  <p>Password: emp123</p>
+                  <div className="bg-muted/50 p-2 rounded-md mt-1">
+                    <p className="font-mono text-xs">Email: employee@hrms.com</p>
+                    <p className="font-mono text-xs">Password: emp123</p>
+                  </div>
                 </div>
               </form>
             </TabsContent>
           </Tabs>
         </CardContent>
         <CardFooter className="flex flex-col">
-          <p className="px-8 text-center text-sm text-muted-foreground">
+          <p className="px-2 text-center text-xs text-muted-foreground">
             By logging in, you agree to our{" "}
             <a href="#" className="underline underline-offset-4 hover:text-primary">
               Terms of Service
