@@ -10,24 +10,17 @@ export function SidebarLink({ to, icon: Icon, label, notificationCount, isActive
   const active = isActive !== undefined ? isActive : location.pathname === to;
 
   const linkVariants = {
-    rest: {
-      backgroundColor: "transparent",
-      transition: { duration: 0.15, ease: "easeInOut" }
-    },
     hover: { 
       backgroundColor: "var(--sidebar-hover)",
-      transition: { duration: 0.15, ease: "easeInOut" }
+      transition: { duration: 0.2 }
     }
   };
 
   const iconMotion = {
-    rest: { 
-      scale: 1,
-      transition: { duration: 0.15 }
-    },
+    rest: { rotate: 0 },
     hover: { 
-      scale: 1.05,
-      transition: { duration: 0.2, ease: "easeOut" }
+      rotate: [0, -3, 3, -2, 0],
+      transition: { duration: 0.4, ease: "easeInOut" }
     }
   };
 
@@ -39,15 +32,14 @@ export function SidebarLink({ to, icon: Icon, label, notificationCount, isActive
             variants={linkVariants}
             initial="rest"
             whileHover="hover"
-            className="my-1"
           >
             <Link
               to={to}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all duration-150",
-                "hover:text-sidebar-accent-foreground",
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all duration-200",
+                "hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground",
                 "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-sidebar-ring",
-                active && "bg-sidebar-accent/80 text-sidebar-accent-foreground font-medium"
+                active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
               )}
             >
               <div className="flex items-center gap-3 w-full">
