@@ -6,19 +6,16 @@ import {
   BriefcaseBusiness,
   ClipboardCheck, 
   CalendarDays, 
-  Award, 
   UserRound,
   Settings,
-  HelpCircle,
   CreditCard,
-  GraduationCap,
   Menu
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../ui/button";
 import { SidebarLink } from "./sidebar-link";
 import { SidebarSection } from "./sidebar-section";
-import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
+import { cn } from "../../lib/utils";
+import { useToast } from "../../hooks/use-toast";
 
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -67,11 +64,8 @@ export function Sidebar() {
               <SidebarLink to="/payroll" icon={CreditCard} label="Payroll" />
               <SidebarLink to="/attendance" icon={ClipboardCheck} label="Attendance" />
               <SidebarLink to="/leave" icon={CalendarDays} label="Leave" notificationCount={2} />
-              <SidebarLink to="/performance" icon={Award} label="Performance" />
-              <SidebarLink to="/recruitment" icon={GraduationCap} label="Recruitment" />
               <SidebarLink to="/calendar" icon={CalendarDays} label="Calendar" />
               <SidebarLink to="/settings" icon={Settings} label="Settings" />
-              <SidebarLink to="/help" icon={HelpCircle} label="Help" />
             </div>
           ) : (
             <>
@@ -86,16 +80,10 @@ export function Sidebar() {
                 <SidebarLink to="/attendance" icon={ClipboardCheck} label="Attendance" />
                 <SidebarLink to="/leave" icon={CalendarDays} label="Leave Management" notificationCount={2} />
               </SidebarSection>
-
-              <SidebarSection title="Development">
-                <SidebarLink to="/performance" icon={Award} label="Performance" />
-                <SidebarLink to="/recruitment" icon={GraduationCap} label="Recruitment" />
-              </SidebarSection>
               
               <SidebarSection title="Tools">
                 <SidebarLink to="/calendar" icon={CalendarDays} label="Calendar" />
                 <SidebarLink to="/settings" icon={Settings} label="Settings" />
-                <SidebarLink to="/help" icon={HelpCircle} label="Help & Support" />
               </SidebarSection>
             </>
           )}

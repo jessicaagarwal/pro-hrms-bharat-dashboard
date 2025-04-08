@@ -4,12 +4,10 @@ import { Layout } from "../components/layout";
 import { StatCard } from "../components/dashboard/stat-card";
 import { PerformanceChart } from "../components/dashboard/performance-chart";
 import { EmployeeStatus } from "../components/dashboard/employee-status";
-import { EventsMeetings } from "../components/dashboard/events-meetings";
-import { Birthdays } from "../components/dashboard/birthdays";
 import { DepartmentDistribution } from "../components/dashboard/department-distribution";
 import { RecentActivities } from "../components/dashboard/recent-activities";
 import { stats } from "../lib/data";
-import { Users, UserCheck, UserMinus, UserPlus } from "lucide-react";
+import { Users, UserCheck, UserMinus } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Dashboard() {
@@ -24,7 +22,7 @@ export default function Dashboard() {
     <Layout title="Dashboard" subtitle="View key metrics and updates">
       <div className="space-y-8">
         {/* Stats Row */}
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           <StatCard
             title="Total Employees"
             value={stats.totalEmployees}
@@ -46,13 +44,6 @@ export default function Dashboard() {
             description={`${Math.round((stats.onLeave / stats.totalEmployees) * 100)}% of workforce`}
             iconColor="text-amber-500"
           />
-          <StatCard
-            title="New Joinings"
-            value={stats.newJoining}
-            icon={UserPlus}
-            description="This month's new recruits"
-            iconColor="text-blue-500"
-          />
         </div>
         
         {/* Charts Row */}
@@ -63,12 +54,6 @@ export default function Dashboard() {
         {/* Tables Row */}
         <div className="grid gap-4 grid-cols-1 md:grid-cols-5">
           <EmployeeStatus />
-        </div>
-        
-        {/* Events and Distribution Row */}
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
-          <EventsMeetings />
-          <Birthdays />
         </div>
         
         {/* Department Distribution and Activities Row */}

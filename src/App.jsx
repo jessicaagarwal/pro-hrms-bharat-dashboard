@@ -13,10 +13,8 @@ import Payroll from "./pages/Payroll";
 import Attendance from "./pages/Attendance";
 import Leave from "./pages/Leave";
 import Performance from "./pages/Performance";
-import Recruitment from "./pages/Recruitment";
 import Calendar from "./pages/Calendar";
 import Settings from "./pages/Settings";
-import Help from "./pages/Help";
 import Profile from "./pages/Profile";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -39,10 +37,8 @@ function AnimatedRoutes() {
         <Route path="/attendance" element={<Attendance />} />
         <Route path="/leave" element={<Leave />} />
         <Route path="/performance" element={<Performance />} />
-        <Route path="/recruitment" element={<Recruitment />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/help" element={<Help />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/old" element={<Index />} />
         {/* Redirect to 404 for any unknown routes */}
