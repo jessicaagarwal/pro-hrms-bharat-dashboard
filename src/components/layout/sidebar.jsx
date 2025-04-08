@@ -1,17 +1,19 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { 
   BarChart, 
   Users, 
   BriefcaseBusiness,
   ClipboardCheck, 
   CalendarDays, 
+  Award, 
   UserRound,
   Settings,
   CreditCard,
   ChevronLeft,
   ChevronRight,
-  Menu
+  LogOut
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { SidebarLink } from "./sidebar-link";
@@ -19,10 +21,30 @@ import { SidebarSection } from "./sidebar-section";
 import { cn } from "../../lib/utils";
 import { useToast } from "../../hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const { toast } = useToast();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    // Get user role from localStorage
+    const role = localStorage.getItem("userRole");
+    setUserRole(role);
+  }, [location]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("userRole");
+    toast({
+      title: "Logged out successfully",
+      description: "You have been logged out",
+      duration: 3000,
+    });
+    navigate("/login");
+  };
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
@@ -34,25 +56,25 @@ export function Sidebar() {
   };
 
   const sidebarVariants = {
-    expanded: { width: "256px", transition: { duration: 0.2, ease: "easeInOut" }},
-    collapsed: { width: "64px", transition: { duration: 0.2, ease: "easeInOut" }}
+    expanded: { width: "256px", transition: { duration: 0.3, ease: "easeInOut" }},
+    collapsed: { width: "72px", transition: { duration: 0.3, ease: "easeInOut" }}
   };
 
   const fadeInVariants = {
     hidden: { opacity: 0 },
     visible: { 
       opacity: 1,
-      transition: { duration: 0.15, delay: 0.05 }
+      transition: { duration: 0.2, delay: 0.05 }
     },
     exit: { 
       opacity: 0,
-      transition: { duration: 0.15 }  
+      transition: { duration: 0.1 }  
     }
   };
 
   return (
     <motion.aside
-      className="h-screen bg-sidebar border-r border-sidebar-border sticky top-0 left-0 z-30"
+      className="h-screen bg-sidebar border-r border-sidebar-border sticky top-0 left-0 z-30 shadow-sm"
       initial="expanded"
       animate={collapsed ? "collapsed" : "expanded"}
       variants={sidebarVariants}
@@ -77,8 +99,9 @@ export function Sidebar() {
           <Button
             variant="ghost"
             size="icon"
-            className="transition-transform duration-200 hover:bg-sidebar-accent/40 ml-auto"
+            className="transition-colors duration-200 hover:bg-sidebar-accent/40 ml-auto"
             onClick={toggleSidebar}
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {collapsed ? 
               <ChevronRight className="h-4 w-4 transition-transform duration-200" /> : 
@@ -97,14 +120,36 @@ export function Sidebar() {
                 variants={fadeInVariants}
                 key="collapsed-menu"
               >
-                <SidebarLink to="/" icon={BarChart} label="Dashboard" />
-                <SidebarLink to="/employee-dashboard" icon={UserRound} label="My Dashboard" />
-                <SidebarLink to="/employees" icon={Users} label="Employees" notificationCount={3} />
-                <SidebarLink to="/payroll" icon={CreditCard} label="Payroll" />
-                <SidebarLink to="/attendance" icon={ClipboardCheck} label="Attendance" />
-                <SidebarLink to="/leave" icon={CalendarDays} label="Leave" notificationCount={2} />
-                <SidebarLink to="/calendar" icon={CalendarDays} label="Calendar" />
+                {userRole === "admin" && (
+                  <>
+                    <SidebarLink to="/" icon={BarChart} label="Dashboard" />
+                    <SidebarLink to="/employees" icon={Users} label="Employees" notificationCount={3} />
+                    <SidebarLink to="/payroll" icon={CreditCard} label="Payroll" />
+                    <SidebarLink to="/attendance" icon={ClipboardCheck} label="Attendance" />
+                    <SidebarLink to="/leave" icon={CalendarDays} label="Leave" notificationCount={2} />
+                    <SidebarLink to="/performance" icon={Award} label="Performance" />
+                  </>
+                )}
+                
+                {userRole === "employee" && (
+                  <>
+                    <SidebarLink to="/employee-dashboard" icon={UserRound} label="My Dashboard" />
+                    <SidebarLink to="/calendar" icon={CalendarDays} label="Calendar" />
+                  </>
+                )}
+                
                 <SidebarLink to="/settings" icon={Settings} label="Settings" />
+                
+                <div className="mt-auto pt-4 w-full flex justify-center">
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="h-5 w-5" />
+                  </Button>
+                </div>
               </motion.div>
             ) : (
               <motion.div
@@ -114,22 +159,45 @@ export function Sidebar() {
                 variants={fadeInVariants}
                 key="expanded-menu"
               >
-                <SidebarSection title="Dashboards">
-                  <SidebarLink to="/" icon={BarChart} label="Admin Dashboard" />
-                  <SidebarLink to="/employee-dashboard" icon={UserRound} label="My Dashboard" />
-                </SidebarSection>
+                {userRole === "admin" && (
+                  <>
+                    <SidebarSection title="Admin Dashboard">
+                      <SidebarLink to="/" icon={BarChart} label="Dashboard" />
+                    </SidebarSection>
+                    
+                    <SidebarSection title="HR Management">
+                      <SidebarLink to="/employees" icon={Users} label="Employees" notificationCount={3} />
+                      <SidebarLink to="/payroll" icon={CreditCard} label="Payroll" />
+                      <SidebarLink to="/attendance" icon={ClipboardCheck} label="Attendance" />
+                      <SidebarLink to="/leave" icon={CalendarDays} label="Leave Management" notificationCount={2} />
+                      <SidebarLink to="/performance" icon={Award} label="Performance" />
+                    </SidebarSection>
+                  </>
+                )}
                 
-                <SidebarSection title="HR Management">
-                  <SidebarLink to="/employees" icon={Users} label="Employees" notificationCount={3} />
-                  <SidebarLink to="/payroll" icon={CreditCard} label="Payroll" />
-                  <SidebarLink to="/attendance" icon={ClipboardCheck} label="Attendance" />
-                  <SidebarLink to="/leave" icon={CalendarDays} label="Leave Management" notificationCount={2} />
-                </SidebarSection>
+                {userRole === "employee" && (
+                  <>
+                    <SidebarSection title="Employee">
+                      <SidebarLink to="/employee-dashboard" icon={UserRound} label="My Dashboard" />
+                      <SidebarLink to="/calendar" icon={CalendarDays} label="Calendar" />
+                    </SidebarSection>
+                  </>
+                )}
                 
-                <SidebarSection title="Tools">
-                  <SidebarLink to="/calendar" icon={CalendarDays} label="Calendar" />
+                <SidebarSection title="Settings">
                   <SidebarLink to="/settings" icon={Settings} label="Settings" />
                 </SidebarSection>
+                
+                <div className="px-3 py-2 mt-auto">
+                  <Button 
+                    variant="ghost" 
+                    className="w-full text-red-500 hover:text-red-600 hover:bg-red-50 justify-start gap-3"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span>Logout</span>
+                  </Button>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -147,17 +215,21 @@ export function Sidebar() {
                 key="user-expanded"
               >
                 <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-                  RS
+                  {userRole === "admin" ? "A" : "E"}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">Rahul Singh</p>
-                  <p className="text-xs text-sidebar-foreground/60 truncate">Administrator</p>
+                  <p className="text-sm font-medium truncate">
+                    {userRole === "admin" ? "Admin User" : "Rahul Singh"}
+                  </p>
+                  <p className="text-xs text-sidebar-foreground/60 truncate">
+                    {userRole === "admin" ? "Administrator" : "Employee"}
+                  </p>
                 </div>
                 <Button
                   variant="ghost"
                   size="icon"
                   className="ml-auto transition-all duration-150 hover:bg-sidebar-accent/40"
-                  onClick={() => window.location.href = "/profile"}
+                  onClick={() => navigate("/profile")}
                 >
                   <Settings className="h-4 w-4" />
                 </Button>
@@ -172,10 +244,10 @@ export function Sidebar() {
                 key="user-collapsed"
               >
                 <div 
-                  className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary transition-transform duration-200 hover:shadow-md cursor-pointer" 
-                  onClick={() => window.location.href = "/profile"}
+                  className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-primary transition-shadow duration-200 hover:shadow-md cursor-pointer" 
+                  onClick={() => navigate("/profile")}
                 >
-                  RS
+                  {userRole === "admin" ? "A" : "E"}
                 </div>
               </motion.div>
             )}

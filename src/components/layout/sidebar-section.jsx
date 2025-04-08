@@ -3,14 +3,23 @@ import { motion } from "framer-motion";
 
 export function SidebarSection({ title, children }) {
   const sectionVariants = {
-    hidden: { opacity: 0, y: 5 },
+    hidden: { opacity: 0, y: 8 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: 0.2,
-        staggerChildren: 0.05
+        duration: 0.25,
+        staggerChildren: 0.04
       } 
+    }
+  };
+
+  const childVariants = {
+    hidden: { opacity: 0, x: -5 },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      transition: { duration: 0.15 }
     }
   };
 
@@ -28,7 +37,16 @@ export function SidebarSection({ title, children }) {
         className="space-y-1"
         variants={sectionVariants}
       >
-        {children}
+        {Array.isArray(children) ? 
+          children.map((child, index) => (
+            <motion.div key={index} variants={childVariants}>
+              {child}
+            </motion.div>
+          )) : 
+          <motion.div variants={childVariants}>
+            {children}
+          </motion.div>
+        }
       </motion.div>
     </motion.div>
   );

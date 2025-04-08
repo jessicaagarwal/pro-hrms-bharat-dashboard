@@ -1,14 +1,26 @@
 
 import { Layout } from "../components/layout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { Progress } from "../components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { Badge } from "../components/ui/badge";
 import { StatCard } from "../components/dashboard/stat-card";
-import { Clock, CalendarDays, Briefcase, TrendingUp } from "lucide-react";
+import { AttendanceTracker } from "../components/attendance/attendance-tracker";
+import { Clock, CalendarDays, Award, TrendingUp } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import { toast } from "sonner";
 
 export default function EmployeeDashboard() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("userRole");
+    toast.success("Logged out successfully");
+    navigate("/login");
+  };
+  
   return (
     <Layout title="Employee Dashboard" subtitle="Your personal workspace">
       <div className="space-y-8">
@@ -16,7 +28,7 @@ export default function EmployeeDashboard() {
         <Card className="glass-card">
           <CardContent className="p-6 flex flex-col md:flex-row items-center md:items-start gap-6">
             <Avatar className="h-20 w-20 border-4 border-primary/20">
-              <AvatarImage src="/lovable-uploads/757fea40-f90c-4734-a7b8-eef599ce18f9.png" />
+              <AvatarImage src="/lovable-uploads/1738c999-4470-49c9-bff5-4b748c16afd4.png" />
               <AvatarFallback>RS</AvatarFallback>
             </Avatar>
             <div className="space-y-2 text-center md:text-left">
@@ -33,44 +45,40 @@ export default function EmployeeDashboard() {
                 <Clock className="h-4 w-4" />
                 <span>Last login: Today, 09:45 AM</span>
               </div>
-              <button className="text-primary text-sm font-medium hover:underline flex items-center gap-1">
-                <CalendarDays className="h-4 w-4" />
-                <span>View Calendar</span>
-              </button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="text-primary border-primary/20"
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
             </div>
           </CardContent>
         </Card>
 
-        {/* Stats Row */}
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard
-            title="Leave Balance"
-            value="12 days"
-            icon={CalendarDays}
-            description="4 sick, 8 casual leaves remaining"
-            iconColor="text-amber-500"
-          />
-          <StatCard
-            title="Attendance"
-            value="97.5%"
-            icon={Clock}
-            description="This month's attendance rate"
-            iconColor="text-green-500"
-          />
-          <StatCard
-            title="Performance"
-            value="4.8/5"
-            icon={TrendingUp}
-            description="Last quarterly review"
-            iconColor="text-primary"
-          />
-          <StatCard
-            title="Projects"
-            value="3"
-            icon={Briefcase}
-            description="Ongoing projects"
-            iconColor="text-blue-500"
-          />
+        {/* Attendance Tracker */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="sm:col-span-2">
+            <AttendanceTracker />
+          </div>
+          
+          <div className="space-y-4">
+            <StatCard
+              title="Leave Balance"
+              value="12 days"
+              icon={CalendarDays}
+              description="4 sick, 8 casual leaves remaining"
+              iconColor="text-amber-500"
+            />
+            <StatCard
+              title="Attendance"
+              value="97.5%"
+              icon={Clock}
+              description="This month's attendance rate"
+              iconColor="text-green-500"
+            />
+          </div>
         </div>
 
         {/* Main Content Tabs */}
@@ -85,7 +93,6 @@ export default function EmployeeDashboard() {
               <Card className="glass-card">
                 <CardHeader>
                   <CardTitle>Your Performance</CardTitle>
-                  <CardDescription>Personal metrics and achievements</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -124,6 +131,39 @@ export default function EmployeeDashboard() {
                   </div>
                 </CardContent>
               </Card>
+              
+              <Card className="glass-card">
+                <CardHeader>
+                  <CardTitle>Upcoming Leaves</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="border border-border/50 rounded-lg p-3 hover:bg-accent/50 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-full bg-blue-500/20 text-blue-500">
+                        <CalendarDays className="h-4 w-4" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-medium">Casual Leave</h4>
+                        <p className="text-sm text-muted-foreground">Apr 15, 2025 - Apr 16, 2025</p>
+                      </div>
+                      <Badge className="bg-green-100 text-green-800 border-green-200">Approved</Badge>
+                    </div>
+                  </div>
+                  
+                  <div className="border border-border/50 rounded-lg p-3 hover:bg-accent/50 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-full bg-amber-500/20 text-amber-500">
+                        <CalendarDays className="h-4 w-4" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-medium">Sick Leave</h4>
+                        <p className="text-sm text-muted-foreground">May 5, 2025</p>
+                      </div>
+                      <Badge className="bg-amber-100 text-amber-800 border-amber-200">Pending</Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
           
@@ -131,10 +171,41 @@ export default function EmployeeDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle>Your Documents</CardTitle>
-                <CardDescription>Personal and company documents</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>Document management content will appear here</p>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="border border-border/50 rounded-lg p-4 hover:bg-accent/50 transition-colors cursor-pointer">
+                    <h3 className="font-medium mb-1">Employment Contract</h3>
+                    <p className="text-sm text-muted-foreground mb-2">PDF Document • Updated Jan 2025</p>
+                    <div className="flex justify-end">
+                      <Button variant="outline" size="sm">View Document</Button>
+                    </div>
+                  </div>
+                  
+                  <div className="border border-border/50 rounded-lg p-4 hover:bg-accent/50 transition-colors cursor-pointer">
+                    <h3 className="font-medium mb-1">ID Proof Documents</h3>
+                    <p className="text-sm text-muted-foreground mb-2">Multiple Files • Updated Dec 2024</p>
+                    <div className="flex justify-end">
+                      <Button variant="outline" size="sm">View Documents</Button>
+                    </div>
+                  </div>
+                  
+                  <div className="border border-border/50 rounded-lg p-4 hover:bg-accent/50 transition-colors cursor-pointer">
+                    <h3 className="font-medium mb-1">Salary Slips</h3>
+                    <p className="text-sm text-muted-foreground mb-2">PDF Document • Updated Monthly</p>
+                    <div className="flex justify-end">
+                      <Button variant="outline" size="sm">View Documents</Button>
+                    </div>
+                  </div>
+                  
+                  <div className="border border-border/50 rounded-lg p-4 hover:bg-accent/50 transition-colors cursor-pointer">
+                    <h3 className="font-medium mb-1">Medical Insurance</h3>
+                    <p className="text-sm text-muted-foreground mb-2">PDF Document • Updated Mar 2025</p>
+                    <div className="flex justify-end">
+                      <Button variant="outline" size="sm">View Document</Button>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
