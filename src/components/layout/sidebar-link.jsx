@@ -4,10 +4,19 @@ import { cn } from "../../lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../components/ui/tooltip";
 import { Badge } from "../../components/ui/badge";
 import { motion } from "framer-motion";
+import { useAuth } from "../../context/AuthContext";
 
-export function SidebarLink({ to, icon: Icon, label, notificationCount, isActive }) {
+export function SidebarLink({ to, icon: Icon, label, notificationCount, isActive, onClick }) {
   const location = useLocation();
+  const { logout } = useAuth();
   const active = isActive !== undefined ? isActive : location.pathname === to;
+
+  const handleClick = (e) => {
+    if (onClick) {
+      e.preventDefault();
+      onClick();
+    }
+  };
 
   const linkVariants = {
     hover: { 
@@ -41,6 +50,7 @@ export function SidebarLink({ to, icon: Icon, label, notificationCount, isActive
                 "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-sidebar-ring",
                 active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
               )}
+              onClick={handleClick}
             >
               <div className="flex items-center gap-3 w-full">
                 <motion.div
