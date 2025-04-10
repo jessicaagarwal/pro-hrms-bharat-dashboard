@@ -21,7 +21,6 @@ export function ProtectedRoute({ allowedRoles = ["admin", "employee"] }) {
   if (allowedRoles.includes(user.role)) {
     return <Outlet />;
   } else {
-    // Redirect to appropriate dashboard based on role
     return <Navigate to={user.role === "admin" ? "/" : "/employee-dashboard"} replace />;
   }
 }

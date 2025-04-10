@@ -1,6 +1,7 @@
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -16,6 +17,7 @@ export default function Login() {
   const [employeeCredentials, setEmployeeCredentials] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { login } = useAuth();
 
   const handleAdminLogin = (e) => {
     e.preventDefault();
@@ -25,12 +27,7 @@ export default function Login() {
     setTimeout(() => {
       // Dummy authentication logic
       if (adminCredentials.email === "admin@hrms.com" && adminCredentials.password === "admin123") {
-        toast({
-          title: "Login successful",
-          description: "Welcome back, Admin!",
-        });
-        localStorage.setItem("userRole", "admin");
-        navigate("/");
+        login("admin");
       } else {
         toast({
           title: "Login failed",
@@ -50,12 +47,7 @@ export default function Login() {
     setTimeout(() => {
       // Dummy authentication logic
       if (employeeCredentials.email === "employee@hrms.com" && employeeCredentials.password === "emp123") {
-        toast({
-          title: "Login successful",
-          description: "Welcome back!",
-        });
-        localStorage.setItem("userRole", "employee");
-        navigate("/employee-dashboard");
+        login("employee");
       } else {
         toast({
           title: "Login failed",
