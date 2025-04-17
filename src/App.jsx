@@ -5,7 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./components/theme-provider";
 import { AuthProvider } from "./context/AuthContext";
-import { ProtectedRoute } from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AnimatePresence } from "framer-motion";
 
 import Dashboard from "./pages/Dashboard";
 import Employees from "./pages/Employees";
@@ -23,132 +24,9 @@ import NotFound from "./pages/NotFound";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
-import ProtectedRoute from "./components/ProtectedRoute";
-import { isAuthenticated, getCurrentUser } from "./lib/auth";
 
 // Create a client
 const queryClient = new QueryClient();
-
-// Animation wrapper component
-function AnimatedRoutes() {
-  const location = useLocation();
-  
-  return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        {/* Public routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/unauthorized" element={<Unauthorized />} />
-
-        {/* Protected HR routes */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute allowedRoles={['HR']}>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/employees"
-          element={
-            <ProtectedRoute allowedRoles={['HR']}>
-              <Employees />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/payroll"
-          element={
-            <ProtectedRoute allowedRoles={['HR']}>
-              <Payroll />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/recruitment"
-          element={
-            <ProtectedRoute allowedRoles={['HR']}>
-              <Recruitment />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Protected Employee routes */}
-        <Route
-          path="/employee-dashboard"
-          element={
-            <ProtectedRoute allowedRoles={['EMPLOYEE']}>
-              <EmployeeDashboard />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Shared protected routes */}
-        <Route
-          path="/attendance"
-          element={
-            <ProtectedRoute allowedRoles={['HR', 'EMPLOYEE']}>
-              <Attendance />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/leave"
-          element={
-            <ProtectedRoute allowedRoles={['HR', 'EMPLOYEE']}>
-              <Leave />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/performance"
-          element={
-            <ProtectedRoute allowedRoles={['HR', 'EMPLOYEE']}>
-              <Performance />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/calendar"
-          element={
-            <ProtectedRoute allowedRoles={['HR', 'EMPLOYEE']}>
-              <Calendar />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute allowedRoles={['HR', 'EMPLOYEE']}>
-              <Settings />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/help"
-          element={
-            <ProtectedRoute allowedRoles={['HR', 'EMPLOYEE']}>
-              <Help />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute allowedRoles={['HR', 'EMPLOYEE']}>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Legacy and error routes */}
-        <Route path="/old" element={<Index />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </AnimatePresence>
-  );
-}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -159,33 +37,119 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <AuthProvider>
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                
-                {/* Protected Admin Routes */}
-                <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/employees" element={<Employees />} />
-                  <Route path="/payroll" element={<Payroll />} />
-                  <Route path="/attendance" element={<Attendance />} />
-                  <Route path="/leave" element={<Leave />} />
-                  <Route path="/performance" element={<Performance />} />
-                  <Route path="/calendar" element={<Calendar />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/profile" element={<Profile />} />
+              <AnimatePresence mode="wait">
+                <Routes>
+                  {/* Public routes */}
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/unauthorized" element={<Unauthorized />} />
+
+                  {/* Protected HR routes */}
+                  <Route
+                    path="/"
+                    element={
+                      <ProtectedRoute allowedRoles={['HR']}>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/employees"
+                    element={
+                      <ProtectedRoute allowedRoles={['HR']}>
+                        <Employees />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/payroll"
+                    element={
+                      <ProtectedRoute allowedRoles={['HR']}>
+                        <Payroll />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/recruitment"
+                    element={
+                      <ProtectedRoute allowedRoles={['HR']}>
+                        <Recruitment />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  {/* Protected Employee routes */}
+                  <Route
+                    path="/employee-dashboard"
+                    element={
+                      <ProtectedRoute allowedRoles={['EMPLOYEE']}>
+                        <EmployeeDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  {/* Shared protected routes */}
+                  <Route
+                    path="/attendance"
+                    element={
+                      <ProtectedRoute allowedRoles={['HR', 'EMPLOYEE']}>
+                        <Attendance />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/leave"
+                    element={
+                      <ProtectedRoute allowedRoles={['HR', 'EMPLOYEE']}>
+                        <Leave />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/performance"
+                    element={
+                      <ProtectedRoute allowedRoles={['HR', 'EMPLOYEE']}>
+                        <Performance />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/calendar"
+                    element={
+                      <ProtectedRoute allowedRoles={['HR', 'EMPLOYEE']}>
+                        <Calendar />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/settings"
+                    element={
+                      <ProtectedRoute allowedRoles={['HR', 'EMPLOYEE']}>
+                        <Settings />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/help"
+                    element={
+                      <ProtectedRoute allowedRoles={['HR', 'EMPLOYEE']}>
+                        <Help />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/profile"
+                    element={
+                      <ProtectedRoute allowedRoles={['HR', 'EMPLOYEE']}>
+                        <Profile />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  {/* Legacy and error routes */}
                   <Route path="/old" element={<Index />} />
-                </Route>
-                
-                {/* Protected Employee Routes */}
-                <Route element={<ProtectedRoute allowedRoles={["employee"]} />}>
-                  <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
-                </Route>
-                
-                {/* Catch-all route */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </AnimatePresence>
             </AuthProvider>
           </BrowserRouter>
         </div>
