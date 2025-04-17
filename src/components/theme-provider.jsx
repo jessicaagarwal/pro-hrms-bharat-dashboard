@@ -1,12 +1,9 @@
-
 import { createContext, useContext, useEffect, useState } from "react";
 
-const initialState = {
+const ThemeProviderContext = createContext({
   theme: "system",
   setTheme: () => null,
-};
-
-const ThemeProviderContext = createContext(initialState);
+});
 
 export function ThemeProvider({
   children,
@@ -15,7 +12,7 @@ export function ThemeProvider({
   ...props
 }) {
   const [theme, setTheme] = useState(
-    () => (localStorage.getItem(storageKey)) || defaultTheme
+    () => localStorage.getItem(storageKey) || defaultTheme
   );
 
   useEffect(() => {

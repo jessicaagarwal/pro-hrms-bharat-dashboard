@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -8,18 +7,21 @@ import {
   ChevronRight,
   ClipboardList,
   FileText,
+  HelpCircle,
   Home,
   LayoutDashboard,
   Settings,
+  Star,
   Timer,
   User,
+  UserPlus,
   Users,
   UserCheck
 } from "lucide-react";
-import { cn } from "../lib/utils";
-import { Button } from "../components/ui/button";
-import { Badge } from "../components/ui/badge";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const SidebarNavItem = ({
   icon: Icon,
@@ -202,6 +204,21 @@ export function Sidebar() {
           </p>
           <nav className="flex flex-col">
             <SidebarNavItem
+              icon={Star}
+              title="Performance"
+              href="/performance"
+              expanded={expanded}
+              active={isActive("/performance")}
+            />
+            <SidebarNavItem
+              icon={UserPlus}
+              title="Recruitment"
+              href="/recruitment"
+              expanded={expanded}
+              active={isActive("/recruitment")}
+              badge="2"
+            />
+            <SidebarNavItem
               icon={Calendar}
               title="Calendar"
               href="/calendar"
@@ -217,18 +234,18 @@ export function Sidebar() {
           </p>
           <nav className="flex flex-col">
             <SidebarNavItem
+              icon={HelpCircle}
+              title="Help Center"
+              href="/help"
+              expanded={expanded}
+              active={isActive("/help")}
+            />
+            <SidebarNavItem
               icon={Settings}
               title="Settings"
               href="/settings"
               expanded={expanded}
               active={isActive("/settings")}
-            />
-            <SidebarNavItem
-              icon={User}
-              title="Profile"
-              href="/profile"
-              expanded={expanded}
-              active={isActive("/profile")}
             />
           </nav>
         </div>

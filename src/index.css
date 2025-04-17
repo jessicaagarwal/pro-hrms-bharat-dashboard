@@ -111,7 +111,6 @@
 
   .animated-card {
     @apply opacity-0 animate-fade-in;
-    animation-fill-mode: forwards;
     animation-delay: 100ms;
   }
   
@@ -129,7 +128,7 @@
   }
   
   .text-gradient-primary {
-    @apply bg-gradient-to-br from-primary via-primary/80 to-primary-600/60 bg-clip-text text-transparent;
+    @apply bg-gradient-to-br from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent;
   }
   
   .card-gradient {
@@ -320,7 +319,7 @@
   }
   
   .gradient-bg-primary {
-    @apply bg-gradient-to-br from-primary/80 to-primary-600/60;
+    @apply bg-gradient-to-br from-primary/80 to-primary/60;
   }
   
   /* Card Effects */
@@ -330,7 +329,7 @@
   
   .card-highlight::before {
     content: '';
-    @apply absolute -inset-1 bg-gradient-to-r from-primary via-primary-600/50 to-primary opacity-0 transition-opacity duration-300 rounded-xl blur-xl;
+    @apply absolute -inset-1 bg-gradient-to-r from-primary via-primary/50 to-primary opacity-0 transition-opacity duration-300 rounded-xl blur-xl;
     z-index: -2;
   }
   

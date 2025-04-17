@@ -1,66 +1,56 @@
-
+import PropTypes from 'prop-types';
 import { Link, useLocation } from "react-router-dom";
-import { cn } from "../../lib/utils";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../components/ui/tooltip";
-import { Badge } from "../../components/ui/badge";
+import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 
+/**
+ * @typedef {Object} SidebarLinkProps
+ * @property {string} to - The route to navigate to
+ * @property {import('lucide-react').LucideIcon} icon - The icon component to display
+ * @property {string} label - The link label text
+ * @property {number} [notificationCount] - Optional notification count to display
+ * @property {boolean} [isActive] - Optional flag to force active state
+ */
+
+/**
+ * Sidebar link component for navigation
+ * @param {SidebarLinkProps} props - Component props
+ */
 export function SidebarLink({ to, icon: Icon, label, notificationCount, isActive }) {
   const location = useLocation();
   const active = isActive !== undefined ? isActive : location.pathname === to;
-
-  const linkVariants = {
-    hover: { 
-      backgroundColor: "var(--sidebar-hover)",
-      transition: { duration: 0.2 }
-    }
-  };
-
-  const iconMotion = {
-    rest: { rotate: 0 },
-    hover: { 
-      rotate: [0, -3, 3, -2, 0],
-      transition: { duration: 0.4, ease: "easeInOut" }
-    }
-  };
 
   return (
     <TooltipProvider>
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>
-          <motion.div
-            variants={linkVariants}
-            initial="rest"
-            whileHover="hover"
+          <Link
+            to={to}
+            className={cn(
+              "flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all duration-300",
+              "hover:bg-sidebar-accent/80 hover:text-sidebar-accent-foreground hover:shadow-sm",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+              active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+            )}
           >
-            <Link
-              to={to}
-              className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground transition-all duration-200",
-                "hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground",
-                "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-sidebar-ring",
-                active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
-              )}
+            <motion.div
+              whileHover={{ rotate: [0, -10, 10, -10, 0], transition: { duration: 0.5 } }}
+              className="flex items-center gap-3 w-full"
             >
-              <div className="flex items-center gap-3 w-full">
-                <motion.div
-                  variants={iconMotion}
-                  className="flex-shrink-0"
+              <Icon className="sidebar-icon" />
+              <span className="text-sm">{label}</span>
+              {notificationCount && notificationCount > 0 ? (
+                <Badge 
+                  variant="outline" 
+                  className="ml-auto bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors"
                 >
-                  <Icon className="sidebar-icon" />
-                </motion.div>
-                <span className="text-sm">{label}</span>
-                {notificationCount && notificationCount > 0 ? (
-                  <Badge 
-                    variant="outline" 
-                    className="ml-auto bg-primary/10 text-primary hover:bg-primary/20 transition-colors duration-200"
-                  >
-                    {notificationCount}
-                  </Badge>
-                ) : null}
-              </div>
-            </Link>
-          </motion.div>
+                  {notificationCount}
+                </Badge>
+              ) : null}
+            </motion.div>
+          </Link>
         </TooltipTrigger>
         <TooltipContent side="right" className="glass-frost">
           {label}
@@ -69,3 +59,11 @@ export function SidebarLink({ to, icon: Icon, label, notificationCount, isActive
     </TooltipProvider>
   );
 }
+
+SidebarLink.propTypes = {
+  to: PropTypes.string.isRequired,
+  icon: PropTypes.elementType.isRequired,
+  label: PropTypes.string.isRequired,
+  notificationCount: PropTypes.number,
+  isActive: PropTypes.bool
+};
