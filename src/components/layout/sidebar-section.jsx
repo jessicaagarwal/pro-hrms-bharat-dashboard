@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { motion } from "framer-motion";
+import { useAuth } from "../../context/AuthContext";
 
 /**
  * @typedef {Object} SidebarSectionProps

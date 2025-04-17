@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
+import { useAuth } from "../../context/AuthContext";
 
 /**
  * @typedef {Object} SidebarLinkProps
@@ -20,6 +21,7 @@ import { motion } from "framer-motion";
  */
 export function SidebarLink({ to, icon: Icon, label, notificationCount, isActive }) {
   const location = useLocation();
+  const { logout } = useAuth();
   const active = isActive !== undefined ? isActive : location.pathname === to;
 
   return (
